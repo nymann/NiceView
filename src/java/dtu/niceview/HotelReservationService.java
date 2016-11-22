@@ -8,7 +8,6 @@ package dtu.niceview;
 import dk.dtu.imm.fastmoney.BankPortType;
 import dk.dtu.imm.fastmoney.BankSecureService;
 import dk.dtu.imm.fastmoney.CreditCardFaultMessage;
-import dk.dtu.imm.fastmoney.types.AccountType;
 import dk.dtu.imm.fastmoney.types.CreditCardInfoType;
 import dk.dtu.imm.fastmoney.types.CreditCardInfoType.ExpirationDate;
 import dtu.niceview.model.Hotel;
@@ -36,11 +35,11 @@ public class HotelReservationService {
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/fastmoney.imm.dtu.dk_8080/BankSecureService.wsdl")
     
     private BankSecureService service;
-    private BankPortType bankWebService;
+    private final BankPortType bankWebService;
     
     static HashMap<Integer, Hotel> hotels = new HashMap<>();
     static HashMap<Integer, List<String>> bookings = new HashMap<>();
-    private DateFormat format;
+    private final DateFormat format;
     
     
     public HotelReservationService() {
@@ -62,6 +61,11 @@ public class HotelReservationService {
     
     /**
      * Web service operation
+     * @param city
+     * @param arrivalDate
+     * @param departureDate
+     * @return 
+     * @throws java.text.ParseException 
      */
     @WebMethod(operationName = "getHotels")
     public List<Hotel> getHotels(@WebParam(name="city") String city,
@@ -74,13 +78,13 @@ public class HotelReservationService {
         List<Hotel> _hotels = new ArrayList<>();
         
         
-        for (Hotel h : hotels.values()) {
-            if(h.getHotelAddress().contains(city)) {
-                int priceOfOneNight = h.getPrice();
-                h.setPrice(priceOfOneNight * numberOfNightsBetweenDates(_arrivalDate, _departureDate));
-                _hotels.add(h);
-            }
-        }
+        hotels.values().stream().filter((h) -> (h.getHotelAddress().contains(city))).map((h) -> {
+            int priceOfOneNight = h.getPrice();
+            h.setPrice(priceOfOneNight * numberOfNightsBetweenDates(_arrivalDate, _departureDate));
+            return h;
+        }).forEach((h) -> {
+            _hotels.add(h);
+        });
         
         return _hotels;
     }
