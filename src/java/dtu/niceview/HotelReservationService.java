@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dtu.niceview;
 
 import dk.dtu.imm.fastmoney.BankPortType;
@@ -28,6 +23,7 @@ import javax.xml.ws.WebServiceRef;
 /**
  *
  * @author Nymann
+ * https://github.com/nymann/NiceView
  */
 
 @WebService(serviceName = "HotelReservationService")
@@ -46,13 +42,12 @@ public class HotelReservationService {
         format = new SimpleDateFormat("dd/MM/yyyy");
         bankWebService = new BankSecureService().getBankSecurePort();
         
-        // Add some hotels.
+        // Create some hotel listings and add them to the list.
         Hotel h = new Hotel("Lotus Inn", "90 Emou St., Athens, Attiki, 10554 Grækenland", 
                 633094, 558, true);
         
         hotels.put(h.getBookingNumber(), h);
         
-        // Create a new hotel listing and add it to the list.
         h = new Hotel("Athens Tiare Hotel", "2 Pireos Street, Athens, Attiki, 10431 Grækenland",
                 172742, 522, false);
         
@@ -76,8 +71,7 @@ public class HotelReservationService {
         Date _departureDate = format.parse(departureDate);
         
         List<Hotel> _hotels = new ArrayList<>();
-        
-        
+              
         hotels.values().stream().filter((h) -> (h.getHotelAddress().contains(city))).map((h) -> {
             int priceOfOneNight = h.getPrice();
             h.setPrice(priceOfOneNight * numberOfNightsBetweenDates(_arrivalDate, _departureDate));
