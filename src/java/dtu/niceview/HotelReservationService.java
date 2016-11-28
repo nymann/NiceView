@@ -152,9 +152,9 @@ public class HotelReservationService {
     // Helper methods.
     
     private int numberOfNightsBetweenDates(Date arrivalDate, Date departureDate) {
-        // We want to return the number of nights there is between two dates, hence the - 1.
+        // We want to return the number of nights there is between two dates.
         // 1 day in milliseconds = 1000*60*60*24 = 86400000
-        return (int) (Math.round((departureDate.getTime() - arrivalDate.getTime()) / 86400000)) - 1;
+        return (int) (Math.round((departureDate.getTime() - arrivalDate.getTime()) / 86400000));
     }
     
     private boolean creditCardValidated(int price, CreditCardInfoType creditCard) {
