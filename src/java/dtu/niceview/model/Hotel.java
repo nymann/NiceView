@@ -13,14 +13,32 @@ public class Hotel {
     private String hotelName;
     private String hotelAddress;
     private int bookingNumber;
-    private int price;
+    private int priceOfOneNight;
+    private int priceTotal;
+
+    public int getPriceOfOneNight() {
+        return priceOfOneNight;
+    }
+
+    public void setPriceOfOneNight(int priceOfOneNight) {
+        this.priceOfOneNight = priceOfOneNight;
+    }
+
+    public int getPriceTotal() {
+        return priceTotal;
+    }
+
+    public void setPriceTotal(int priceTotal) {
+        this.priceTotal = priceTotal;
+    }
     private boolean creditCardGuaranteedRequired;
     
     public Hotel(String hotelName, String hotelAddress, int bookingNumber, int price, boolean creditCardGuaranteedRequired) {
         this.hotelName = hotelName;
         this.hotelAddress = hotelAddress;
         this.bookingNumber = bookingNumber;
-        this.price = price;
+        this.priceOfOneNight = price;
+        this.priceTotal = 0;
         this.creditCardGuaranteedRequired = creditCardGuaranteedRequired;
     }
 
@@ -46,14 +64,6 @@ public class Hotel {
 
     public void setBookingNumber(int bookingNumber) {
         this.bookingNumber = bookingNumber;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public boolean isCreditCardGuaranteedRequired() {

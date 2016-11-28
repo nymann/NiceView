@@ -26,6 +26,7 @@ import javax.xml.ws.WebServiceRef;
  * https://github.com/nymann/NiceView
  */
 
+
 @WebService(serviceName = "HotelReservationService")
 public class HotelReservationService {
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/fastmoney.imm.dtu.dk_8080/BankSecureService.wsdl")
@@ -71,14 +72,25 @@ public class HotelReservationService {
         Date _departureDate = format.parse(departureDate);
         
         List<Hotel> _hotels = new ArrayList<>();
-              
-        hotels.values().stream().filter((h) -> (h.getHotelAddress().contains(city))).map((h) -> {
+        
+        
+        /*hotels.values().stream().filter((h) -> (h.getHotelAddress().contains(city))).map((h) -> {
             int priceOfOneNight = h.getPrice();
             h.setPrice(priceOfOneNight * numberOfNightsBetweenDates(_arrivalDate, _departureDate));
             return h;
         }).forEach((h) -> {
             _hotels.add(h);
-        });
+        });*/
+
+        for (Hotel h : hotels.values()) {
+            
+            if (h.getHotelAddress().contains(city)) {
+                int priceOfOneNight = h.getPriceOfOneNight();
+                h.setPriceTotal(priceOfOneNight * numberOfNightsBetweenDates(_arrivalDate, _departureDate));
+                _hotels.add(h);                
+            }
+        }
+        
         
         return _hotels;
     }
@@ -98,7 +110,7 @@ public class HotelReservationService {
             
             for (Hotel h : hotels.values()) {
                 if (h.getBookingNumber() == bookingNumber) {
-                    price = h.getPrice();
+                    price = h.getPriceTotal();
                 }
             }
             
