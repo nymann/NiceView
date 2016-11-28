@@ -46,6 +46,9 @@ public class HotelReservationService {
         // Create some hotel listings and add them to the list.
         Hotel h = new Hotel("Lotus Inn", "90 Emou St., Athens, Attiki, 10554 Grækenland", 
                 633094, 558, true);
+        hotels.put(h.getBookingNumber(), h);
+        
+        h = new Hotel("Trump Internation Hotel & Tower New York", "1 Central Park W, New York, NYC, 10023 USA", 2103213, 5032 , true);
         
         hotels.put(h.getBookingNumber(), h);
         
@@ -106,7 +109,7 @@ public class HotelReservationService {
         CreditCardInfoType creditCard = createCreditCard(creditcardName, creditCardNumber, expirationMonth, expirationYear);        
         
         if (creditCardGuaranteedRequired) {
-            int price = 0;
+            int price = 0;  
             
             for (Hotel h : hotels.values()) {
                 if (h.getBookingNumber() == bookingNumber) {
@@ -133,6 +136,9 @@ public class HotelReservationService {
             } else {
                 throw new Exception("Credit Card declined.");
             }
+        }
+        else if(!bookings.containsKey(bookingNumber)) {
+            bookings.put(bookingNumber, null);
         }
         
         return true;
