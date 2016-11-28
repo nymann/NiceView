@@ -40,7 +40,7 @@ public class HotelReservationService {
     
     
     public HotelReservationService() {
-        format = new SimpleDateFormat("dd/MM/yyyy");
+        format = new SimpleDateFormat("dd-MM-yyyy");
         bankWebService = new BankSecureService().getBankSecurePort();
         
         // Create some hotel listings and add them to the list.
